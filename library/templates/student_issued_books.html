@@ -1,0 +1,201 @@
+{% extends 'student_navbar.html' %}
+{% load static %}
+{% block title %} All Students List {% endblock %}
+{% block css %}
+<style>
+    /* Modern table styling */
+    .container {
+        max-width: 95%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .page-title {
+        color: #2a85cb;
+        font-weight: 700;
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 10px;
+    }
+
+    .page-title::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 3px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(to right, #2a85cb, #87ceeb);
+        border-radius: 10px;
+    }
+
+    .page-title u {
+        text-decoration: none;
+    }
+
+    /* Table styling */
+    #example {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+
+    #example thead {
+        background: linear-gradient(135deg, #2a85cb, #4ca1d8);
+    }
+
+    #example thead th {
+        color: white;
+        font-weight: 600;
+        padding: 15px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        border: none;
+        vertical-align: middle;
+    }
+
+    #example tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    #example tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    #example tbody tr:hover {
+        background-color: #e8f4f8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #example tbody td {
+        padding: 12px 15px;
+        vertical-align: middle;
+        border-top: 1px solid #eaeaea;
+        font-weight: 500;
+    }
+
+    /* Fine column styling */
+    #example tbody td:last-child {
+        font-weight: 600;
+        color: #e74c3c;
+    }
+
+    /* Book name styling */
+    #example tbody td:nth-child(4) {
+        font-weight: 600;
+        color: #2a85cb;
+    }
+
+    /* DataTables styling */
+    .dataTables_wrapper .dataTables_length, 
+    .dataTables_wrapper .dataTables_filter {
+        margin-bottom: 20px;
+    }
+
+    .dataTables_wrapper .dataTables_length select, 
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 5px 10px;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        width: 250px;
+    }
+
+    .dataTables_wrapper .dataTables_info, 
+    .dataTables_wrapper .dataTables_paginate {
+        margin-top: 20px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        border-radius: 5px;
+        margin: 0 2px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #2a85cb !important;
+        border-color: #2a85cb !important;
+        color: white !important;
+    }
+
+    /* Export buttons styling */
+    .dt-buttons {
+        margin-bottom: 20px;
+    }
+
+    .dt-button {
+        background-color: #f8f9fa !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 5px !important;
+        color: #555 !important;
+        padding: 6px 12px !important;
+        margin-right: 5px !important;
+        transition: all 0.3s ease;
+    }
+
+    .dt-button:hover {
+        background-color: #2a85cb !important;
+        color: white !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        #example thead th, #example tbody td {
+            padding: 10px 5px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    <h1 class="text-center page-title"><u>All Issued Books</u></h1>
+    <table class="table table-hover" id="example">
+        <thead>
+            <tr class="text-center">
+                <th>Sr.No</th>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Issued Date</th>
+                <th>Expiry Date</th>
+                <th>Fine</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in li1 %}
+            <tr class="text-center">
+                <td>{{forloop.counter}}.</td>
+                <td>{{i.0}}</td>
+                <td>{{i.1}}</td>
+                <td>{{i.2}}</td>
+                <td>{{i.3}}</td>
+                {% endfor %}
+                {% for i in li2 %}
+                <td>{{i.0}}</td>
+                <td>{{i.1}}</td>
+                <td>Rs {{i.2}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock %}

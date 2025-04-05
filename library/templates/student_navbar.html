@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <title>{% block title %} {% endblock %}</title>
+    <style>
+      :root {
+        --primary-color: #2a85cb;
+        --secondary-color: #f8f9fa;
+        --accent-color: #e74c3c;
+        --text-color: #333;
+        --highlight-color: #e8f4f8;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f7f9fc;
+      }
+      
+      .navbar {
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #ffffff, var(--secondary-color));
+      }
+      
+      .navbar-brand {
+        font-weight: 700;
+        color: var(--primary-color) !important;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .navbar-brand::before {
+        content: "\f02d";
+        font-family: "Font Awesome 5 Free";
+        margin-right: 10px;
+        font-weight: 900;
+        color: var(--primary-color);
+      }
+      
+      .nav-link {
+        color: var(--text-color) !important;
+        font-weight: 500;
+        padding: 8px 15px !important;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+      
+      .nav-link:hover {
+        color: var(--primary-color) !important;
+        background-color: var(--highlight-color);
+        transform: translateY(-2px);
+      }
+      
+      .nav-link.active {
+        background-color: var(--primary-color);
+        color: white !important;
+      }
+      
+      .nav-link.active:hover {
+        color: white !important;
+      }
+      
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 50%;
+        background-color: var(--primary-color);
+        transition: all 0.3s ease;
+      }
+      
+      .nav-link:hover::after {
+        width: 70%;
+        left: 15%;
+      }
+      
+      .nav-link.active::after {
+        display: none;
+      }
+      
+      .welcome-badge {
+        background-color: var(--highlight-color);
+        color: var(--primary-color);
+        font-weight: 600;
+        padding: 8px 15px;
+        border-radius: 20px;
+        border: 1px solid rgba(42, 133, 203, 0.2);
+        display: flex;
+        align-items: center;
+      }
+      
+      .welcome-badge::before {
+        content: "\f007";
+        font-family: "Font Awesome 5 Free";
+        margin-right: 10px;
+        font-weight: 900;
+      }
+      
+      .navbar-toggler {
+        border: none;
+        padding: 8px;
+      }
+      
+      .navbar-toggler:focus {
+        box-shadow: none;
+        outline: none;
+      }
+      
+      .logout-link {
+        color: var(--accent-color) !important;
+        font-weight: 600;
+      }
+      
+      .logout-link::before {
+        content: "\f2f5";
+        font-family: "Font Awesome 5 Free";
+        margin-right: 5px;
+        font-weight: 900;
+      }
+      
+      @media (max-width: 992px) {
+        .welcome-badge {
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+      }
+    </style>
+    {% block css %}
+    {% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Library Management System</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/change_password/">
+                <i class="fas fa-key"></i> Change Password
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/">
+                <i class="fas fa-user-circle"></i> Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/search/">
+                <i class="fas fa-shopping-cart"></i> Buy Books
+              </a>
+            </li>            
+            <li class="nav-item">
+              <a class="nav-link" href="/student_issued_books/">
+                <i class="fas fa-book-reader"></i> View Issued Books
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link logout-link" href="/logout/">Logout</a>
+            </li>
+          </ul>
+          <div class="ms-lg-4 welcome-badge">
+            Welcome {{request.user}}
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    {% block body %}
+    {% endblock %}
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+
+    {% block js %}
+    <script>
+      $(document).ready(function () {
+        // Set active nav link based on current page
+        const currentLocation = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === currentLocation) {
+            link.classList.add('active');
+          }
+        });
+        
+        $('#example').DataTable({
+          dom: 'Bfrtip',
+          buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5'
+          ]
+        });
+      });
+    </script>
+    {% endblock %}
+  </body>
+</html>

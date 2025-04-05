@@ -1,0 +1,262 @@
+{% extends 'student_navbar.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block css %}
+<style>
+  body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+  }
+  
+  .profile-container {
+    padding: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border-top: 5px solid #3498db;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  
+  .profile-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1.25rem;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #3498db, transparent);
+  }
+  
+  .profile-image-container {
+    position: relative;
+    margin-right: 2rem;
+  }
+  
+  .profile-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-image-container::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3498db, #9b59b6);
+    z-index: -1;
+    opacity: 0.2;
+  }
+  
+  .profile-name {
+    margin-bottom: 0.3rem;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  
+  .profile-username {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-info-container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .info-row {
+    display: flex;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #ecf0f1;
+    transition: all 0.3s ease;
+  }
+  
+  .info-row:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+    transform: translateX(5px);
+    border-radius: 5px;
+  }
+  
+  .info-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .info-label {
+    width: 40%;
+    font-weight: 600;
+    color: #34495e;
+  }
+  
+  .info-value {
+    width: 60%;
+    color: #2c3e50;
+  }
+  
+  .edit-profile-btn {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+  }
+  
+  .edit-profile-btn:hover {
+    background: linear-gradient(to right, #2980b9, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+  }
+  
+  .student-badge {
+    display: inline-block;
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: white;
+    padding: 0.3rem 1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+  }
+  
+  .section-title {
+    color: #3498db;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(to right, #3498db, #9b59b6);
+    border-radius: 3px;
+  }
+  
+  @media (max-width: 768px) {
+    .profile-container {
+      padding: 1.5rem;
+    }
+    
+    .profile-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .profile-image-container {
+      margin-right: 0;
+      margin-bottom: 1.5rem;
+    }
+    
+    .profile-header::after {
+      bottom: -1rem;
+    }
+    
+    .info-row {
+      flex-direction: column;
+    }
+    
+    .info-label, .info-value {
+      width: 100%;
+    }
+    
+    .info-value {
+      margin-top: 0.3rem;
+    }
+    
+    .section-title::after {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container profile-container">
+  <div class="profile-header">
+    <div class="profile-image-container">
+      <img src="{{user.student.image.url}}" alt="Profile Picture" class="profile-image">
+    </div>
+    <div>
+      <div class="student-badge"><i class="fas fa-user-graduate mr-1"></i> Student</div>
+      <h2 class="profile-name">{{user.get_full_name}}</h2>
+      <p class="profile-username">@{{user}}</p>
+      <p><i class="fas fa-book mr-1"></i> {{user.student.branch}} | <i class="fas fa-graduation-cap mr-1"></i> {{user.student.classroom}}</p>
+    </div>
+  </div>
+  
+  <h4 class="section-title">Student Information</h4>
+  <div class="profile-info-container">
+    <div class="info-row">
+      <div class="info-label"><i class="fas fa-id-card mr-2"></i>Student ID</div>
+      <div class="info-value">{{user.id}}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label"><i class="fas fa-envelope mr-2"></i>Email Address</div>
+      <div class="info-value">{{user.email}}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label"><i class="fas fa-phone mr-2"></i>Phone Number</div>
+      <div class="info-value">{{user.student.phone}}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label"><i class="fas fa-code-branch mr-2"></i>Branch</div>
+      <div class="info-value">{{user.student.branch}}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label"><i class="fas fa-chalkboard mr-2"></i>Class</div>
+      <div class="info-value">{{user.student.classroom}}</div>
+    </div>
+    <div class="info-row">
+      <div class="info-label"><i class="fas fa-list-ol mr-2"></i>Roll Number</div>
+      <div class="info-value">{{user.student.roll_no}}</div>
+    </div>
+  </div>
+  
+  <div class="text-center">
+    <a href="/edit_profile/" class="btn edit-profile-btn">
+      <i class="fas fa-user-edit mr-2"></i>Edit Profile
+    </a>
+  </div>
+</div>
+<script type="text/javascript">
+    (function(d, m){
+        var kommunicateSettings = 
+            {"appId":"84e705faf20ee6abef079013157cf987","popupWidget":true,"automaticChatOpenOnNavigation":true};
+        var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+        s.src = "https://widget.kommunicate.io/v2/kommunicate.app";
+        var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+        window.kommunicate = m; m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+/* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
+</script>
+{% endblock %}

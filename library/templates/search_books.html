@@ -1,0 +1,55 @@
+{% extends 'student_navbar.html' %}
+{% load static %}
+{% block title %}Search Book{% endblock %}
+{% block css %}
+<!-- Add any custom CSS if needed -->
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Search & Buy Books</h2>
+
+    <!-- Search Form -->
+    <form method="get" class="input-group mb-4 w-75 mx-auto">
+        <input type="text" name="q" class="form-control" placeholder="Search for a book..." required>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Search
+        </button>
+    </form>
+
+    <!-- Book Results -->
+    <div class="row justify-content-center">
+        {% for book in books %}
+        <div class="col-lg-2 col-md-3 col-sm-4 col-6 mb-3">
+            <div class="card h-100 shadow-sm" style="font-size: 0.85rem;">
+                {% if book.volumeInfo.imageLinks %}
+                    <img src="{{ book.volumeInfo.imageLinks.thumbnail }}" class="card-img-top" alt="Book cover" style="height: 150px; object-fit: contain;">
+                {% else %}
+                    <img src="{% static 'images/no_cover.png' %}" class="card-img-top" alt="No cover" style="height: 150px; object-fit: contain;">
+                {% endif %}
+
+                <div class="card-body p-2">
+                    <h6 class="card-title mb-1" style="font-size: 0.9rem;">{{ book.volumeInfo.title|truncatechars:40 }}</h6>
+                    <p class="card-text mb-1">
+                        <strong>Author(s):</strong><br>
+                        {{ book.volumeInfo.authors|join:", "|truncatechars:40 }}
+                    </p>
+                </div>
+
+                <div class="card-footer bg-transparent border-top-0 p-2">
+                    {% if book.saleInfo.buyLink %}
+                        <a href="{{ book.saleInfo.buyLink }}" target="_blank" class="btn btn-success btn-sm w-100">
+                            <i class="fas fa-shopping-cart fa-xs"></i> Buy
+                        </a>
+                    {% else %}
+                        <p class="text-muted text-center mb-0" style="font-size: 0.8rem;">Not for sale</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <p class="text-center">No books found. Try searching with a different keyword.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

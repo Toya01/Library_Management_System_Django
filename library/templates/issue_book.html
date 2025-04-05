@@ -1,0 +1,207 @@
+{% extends 'admin_navbar.html' %}
+{% load static %}
+{% block title %} Issue Book {% endblock %}
+{% block css %}
+<style>
+    .issue-form-container {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+    
+    .form-header {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+    
+    .form-header h2 {
+        color: #2c3e50;
+        font-weight: 700;
+    }
+    
+    .form-header:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(to right, #3498db, #2ecc71);
+    }
+    
+    .form-icon {
+        display: block;
+        margin: 0 auto 15px;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        font-size: 36px;
+        color: white;
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+        border-left: 3px solid #3498db;
+        padding-left: 15px;
+    }
+    
+    .form-group label {
+        font-weight: 600;
+        color: #34495e;
+        margin-bottom: 8px;
+        display: block;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s;
+        background-color: #f9f9f9;
+    }
+    
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        background-color: #ffffff;
+    }
+    
+    select.form-control {
+        height: auto;
+        padding-right: 30px;
+        background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 8px 10px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    .btn-issue {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(46, 204, 113, 0.3);
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-issue:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(46, 204, 113, 0.4);
+    }
+    
+    .btn-issue:active {
+        transform: translateY(-1px);
+    }
+    
+    .submit-wrapper {
+        text-align: center;
+        margin-top: 30px;
+    }
+    
+    .help-text {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 5px;
+    }
+    
+    /* For date inputs */
+    input[type="date"] {
+        padding: 10px 15px;
+    }
+    
+    /* For mobile responsiveness */
+    @media (max-width: 768px) {
+        .issue-form-container {
+            padding: 20px 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container issue-form-container">
+    <div class="form-header">
+        <span class="form-icon">
+            <i class="fas fa-book-reader"></i>
+        </span>
+        <h2>Issue Book to Student</h2>
+    </div>
+    
+    <form method="POST"> 
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            <div class="field-wrapper">
+                {{ field.errors }}
+                {{ field }}
+                {% if field.help_text %}
+                <div class="help-text">{{ field.help_text|safe }}</div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="submit-wrapper">
+            <button type="submit" class="btn btn-issue">
+                <i class="fas fa-paper-plane mr-2"></i> Issue Book
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // Add Bootstrap form-control class to all form inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        const formElements = document.querySelectorAll('input, select, textarea');
+        formElements.forEach(element => {
+            element.classList.add('form-control');
+        });
+    });
+    
+    {% if alert %}
+    // Use SweetAlert if available, otherwise fallback to regular alert
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Success!',
+            text: 'Book has been successfully issued to the student',
+            icon: 'success',
+            confirmButtonText: 'Continue'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.location = "/issue_book";
+            }
+        });
+    } else {
+        alert("Book Successfully Issued.");
+        document.location = "/issue_book";
+    }
+    {% endif %}
+</script>
+{% endblock %}
